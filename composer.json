@@ -1,0 +1,21 @@
+{
+    "name": "regru-api-php",
+    "version": "v1.0.0",
+    "description": "Regru client for PHP",
+    "keywords": ["regru", "domain", "hosting"],
+    "authors": [
+        {
+            "name": "Anton Kerbel",
+            "email": "apefromfuture@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "regruapi\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "5.*",
+        "monolog/monolog": "^1.21"
+    }
+}
