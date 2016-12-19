@@ -1,5 +1,5 @@
 {
-    "name": "regru-api-php",
+    "name": "akerbel/regru-api-php",
     "version": "v1.0.0",
     "description": "Regru client for PHP",
     "keywords": ["regru", "domain", "hosting"],
