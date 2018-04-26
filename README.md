@@ -5,7 +5,7 @@ REG.RU API client for PHP
 
 How to install:
 ===============
-The recommended way to install WHMCS Easy Addons is through Composer.
+The recommended way to install it is through Composer.
 
 ```bash
 # Install Composer
