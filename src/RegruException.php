@@ -1,9 +1,6 @@
 <?php
-namespace regruapi;
 
-if (!defined('WHMCS')) {
-    die('This file cannot be accessed directly');
-}
+namespace regruapi;
 
 class RegruException extends \Exception
 {
@@ -11,12 +8,12 @@ class RegruException extends \Exception
      * @var string Код ошибки regru api
      */
     protected $regruErrorCode;
-    
+
     /**
      * @var mixed Парметры ошибки regru api
      */
     protected $regruErrorParams;
-    
+
     /**
      * Получить код ошибки regru api
      *
@@ -26,7 +23,7 @@ class RegruException extends \Exception
     {
         return $this->regruErrorCode;
     }
-    
+
     /**
      * Получить парметры ошибки regru api
      *
@@ -36,7 +33,7 @@ class RegruException extends \Exception
     {
         return $this->regruErrorParams;
     }
-    
+
     /**
      * Конструктор
      *
@@ -47,12 +44,12 @@ class RegruException extends \Exception
     public function __construct($message, $code = null, $params = null)
     {
         parent::__construct($message);
-        
+
         $this->regruErrorCode = $code;
-        
+
         $this->regruErrorParams = $params;
     }
-    
+
     /**
      * Получить ошибки валидации в виде массива
      *
@@ -60,7 +57,7 @@ class RegruException extends \Exception
      */
     public function getValidateError()
     {
-        
+
         $res = [];
         foreach ($this->regruErrorParams['error_detail'] as $key=>$value) {
 
@@ -76,5 +73,5 @@ class RegruException extends \Exception
 
         return $res;
     }
-    
+
 }
