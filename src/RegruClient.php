@@ -36,6 +36,16 @@ class RegruClient
     protected $password;
 
     /**
+     * @var string Path to log file
+     */
+    protected $log_path;
+
+    /**
+     * @var boolean Log level (log all requests or exceptions only)
+     */
+    protected $debug;
+
+    /**
      * @var string Имя категории функций апи
      */
     protected $categoryName;
@@ -84,6 +94,8 @@ class RegruClient
     {
         $this->username = $options['username'];
         $this->password = $options['password'];
+        $this->log_path = $options['log_path'];
+        $this->debug = $options['debug'];
 
         if (!empty($options['inputFormat'])) {
             $this->inputFormat = $options['inputFormat'];
@@ -103,8 +115,8 @@ class RegruClient
             $this->lang = 'ru';
         }
 
-        $log = new Logger('main');
-        $log->pushHandler(new StreamHandler(__DIR__ . '/../log/main.log', Logger::DEBUG));
+        $log = new Logger('regru');
+        $log->pushHandler(new StreamHandler($this->log_path, true === $this->debug ? Logger::DEBUG : Logger::ERROR));
 
         $log->pushProcessor(
             new \Monolog\Processor\ProcessIdProcessor()
