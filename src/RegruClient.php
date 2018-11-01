@@ -46,6 +46,11 @@ class RegruClient
     protected $debug;
 
     /**
+     * @var float Default Guzzle timeout (connect_timeout and timeout)
+     */
+    protected $timeout;
+
+    /**
      * @var string Имя категории функций апи
      */
     protected $categoryName;
@@ -96,6 +101,7 @@ class RegruClient
         $this->password = $options['password'];
         $this->log_path = $options['log_path'];
         $this->debug = $options['debug'];
+        $this->timeout = $options['timeout'];
 
         if (!empty($options['inputFormat'])) {
             $this->inputFormat = $options['inputFormat'];
@@ -170,7 +176,11 @@ class RegruClient
 
             $this->logger->debug("Calling $url with options: ".print_r(self::censor($post_params), true));
 
-            $raw = (string)$HttpClient->post($url, array('form_params' => $post_params))->getBody();
+            $raw = (string)$HttpClient->post($url, [
+                'form_params' => $post_params,
+                'connect_timeout' => null !== $this->timeout ? $this->timeout : 0,
+                'timeout' => null !== $this->timeout ? $this->timeout : 0,
+            ])->getBody();
 
             $this->logger->debug("Got result: ".$raw);
 
