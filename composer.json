@@ -15,7 +15,7 @@
         }
     },
     "require": {
-        "guzzlehttp/guzzle": "5.*",
+        "guzzlehttp/guzzle": "^5.0 || ^6.0",
         "monolog/monolog": "^1.21"
     }
 }
