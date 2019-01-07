@@ -36,6 +36,21 @@ class RegruClient
     protected $password;
 
     /**
+     * @var string Path to log file
+     */
+    protected $log_path;
+
+    /**
+     * @var boolean Log level (log all requests or exceptions only)
+     */
+    protected $debug;
+
+    /**
+     * @var float Default Guzzle timeout (connect_timeout and timeout)
+     */
+    protected $timeout;
+
+    /**
      * @var string Имя категории функций апи
      */
     protected $categoryName;
@@ -84,6 +99,9 @@ class RegruClient
     {
         $this->username = $options['username'];
         $this->password = $options['password'];
+        $this->log_path = $options['log_path'];
+        $this->debug = $options['debug'];
+        $this->timeout = $options['timeout'];
 
         if (!empty($options['inputFormat'])) {
             $this->inputFormat = $options['inputFormat'];
@@ -103,8 +121,8 @@ class RegruClient
             $this->lang = 'ru';
         }
 
-        $log = new Logger('main');
-        $log->pushHandler(new StreamHandler(__DIR__ . '/../log/main.log', Logger::DEBUG));
+        $log = new Logger('regru');
+        $log->pushHandler(new StreamHandler($this->log_path, true === $this->debug ? Logger::DEBUG : Logger::ERROR));
 
         $log->pushProcessor(
             new \Monolog\Processor\ProcessIdProcessor()
@@ -158,7 +176,11 @@ class RegruClient
 
             $this->logger->debug("Calling $url with options: ".print_r(self::censor($post_params), true));
 
-            $raw = (string)$HttpClient->post($url, array('form_params' => $post_params))->getBody();
+            $raw = (string)$HttpClient->post($url, [
+                'form_params' => $post_params,
+                'connect_timeout' => null !== $this->timeout ? $this->timeout : 0,
+                'timeout' => null !== $this->timeout ? $this->timeout : 0,
+            ])->getBody();
 
             $this->logger->debug("Got result: ".$raw);
 
