@@ -51,6 +51,11 @@ class RegruClient
     protected $timeout;
 
     /**
+     * @var string Source IP address for Guzzle connections (CURLOPT_INTERFACE and socket context option bindto)
+     */
+    protected $bind_ip;
+
+    /**
      * @var string Имя категории функций апи
      */
     protected $categoryName;
@@ -102,6 +107,7 @@ class RegruClient
         $this->log_path = $options['log_path'];
         $this->debug = $options['debug'];
         $this->timeout = $options['timeout'];
+        $this->bind_ip = $options['bind_ip'];
 
         if (!empty($options['inputFormat'])) {
             $this->inputFormat = $options['inputFormat'];
@@ -180,6 +186,14 @@ class RegruClient
                 'form_params' => $post_params,
                 'connect_timeout' => null !== $this->timeout ? $this->timeout : 0,
                 'timeout' => null !== $this->timeout ? $this->timeout : 0,
+                'curl' => [
+                    CURLOPT_INTERFACE => null !== $this->bind_ip ? $this->bind_ip : '0',
+                ],
+                'stream_context' => [
+                    'socket' => [
+                        'bindto' => null !== $this->bind_ip ? $this->bind_ip : '0',
+                    ]
+                ],
             ])->getBody();
 
             $this->logger->debug("Got result: ".$raw);
